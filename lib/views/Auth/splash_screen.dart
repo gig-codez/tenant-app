@@ -38,10 +38,6 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<UserAccountController>(context).getUserData();
-    // if (BlocProvider.of<UserAccountController>(context).state.isNotEmpty) {
-    //   // BlocProvider.of<TenantController>(context)
-    //   //     .fetchTenants(context.read<UserAccountController>().state);
-    // }
 
     return Builder(
       // future: Future.delayed(const Duration(seconds: 3)),

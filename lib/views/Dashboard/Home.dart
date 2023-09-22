@@ -48,7 +48,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     // BlocProvider.of<UserdataController>(context).getUserData();
     // BlocProvider.of<TenantController>(context, listen: true)
     //     .fetchTenants(context.read<UserdataController>().state);
-    ;
+
     BlocProvider.of<PowerBillController>(context).getSavePowerBill();
 
     // computations for balance
