@@ -2,6 +2,9 @@
 
 import 'dart:async';
 
+import 'package:nyumbayo_app/controllers/LoaderController.dart';
+import 'package:nyumbayo_app/controllers/PaymentController.dart';
+import 'package:nyumbayo_app/helpers/session_manager.dart';
 import 'package:nyumbayo_app/tools/Reload.dart';
 
 import 'Observers/IntervalObserver.dart';
@@ -27,7 +30,7 @@ Future<void> main() async {
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('android12splash');
   // iOS settings
-  // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
+  // initialize the plugin. app_icon needs to be a added as a drawable resource to the Android head project
 
   const DarwinInitializationSettings initializationSettingsDarwin =
       DarwinInitializationSettings();
@@ -45,10 +48,6 @@ Future<void> main() async {
   await flutterLocalNotificationsPlugin.initialize(initializationSettings,
       onDidReceiveNotificationResponse: (payload) async {});
 
-  // end of firebase messaging
-  Timer.periodic(const Duration(seconds: 7), (timer) {
-    // sendNotification();  Maurice256
-  });
   Bloc.observer = const Observer();
   runApp(
     ReloadApp(
@@ -56,10 +55,12 @@ Future<void> main() async {
         providers: [
           BlocProvider(create: (_) => UserAccountController()),
           BlocProvider(create: (_) => AmountController()),
+          BlocProvider(create: (_) => PaymentController()),
           BlocProvider(create: (_) => TenantController()),
           BlocProvider(create: (_) => PowerStatusController()),
           BlocProvider(create: (_) => PowerBillController()),
           ChangeNotifierProvider(create: (_) => MainController()),
+          ChangeNotifierProvider(create: (_) => LoaderController()),
         ],
         child: Builder(builder: (context) {
           return MaterialApp(

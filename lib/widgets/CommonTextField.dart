@@ -11,7 +11,8 @@ class CommonTextField extends StatelessWidget {
   final TextEditingController? controller;
   final Color? fieldColor;
   final IconData? icon;
-  final int?  maxLength;
+  final bool readOnly;
+  final int? maxLength;
   final bool enableSuffix;
   final EdgeInsets? contentPadding;
   final IconData? suffixIcon;
@@ -37,7 +38,7 @@ class CommonTextField extends StatelessWidget {
     this.suffixIcon,
     this.onTapSuffix,
     this.enableSuffix = false,
-    this.icon,
+    this.icon, this.readOnly = false,
   }) : super(key: key);
 
   @override
@@ -81,6 +82,7 @@ class CommonTextField extends StatelessWidget {
                 height: 45,
                 child: Center(
                   child: TextFormField(
+                    readOnly: readOnly,
                     controller: controller,
                     maxLength: maxLength,
                     maxLines: 1,
@@ -91,12 +93,13 @@ class CommonTextField extends StatelessWidget {
                     onEditingComplete: () => FocusScope.of(context).nextFocus(),
                     validator: validate,
                     decoration: InputDecoration(
-                      contentPadding: contentPadding ??  const EdgeInsets.only(
-                        left: 20,
-                        right: 16,
-                        top: 26,
-                        bottom: 10,
-                      ),
+                      contentPadding: contentPadding ??
+                          const EdgeInsets.only(
+                            left: 20,
+                            right: 16,
+                            top: 26,
+                            bottom: 10,
+                          ),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       suffixIcon: enableSuffix
                           ? IconButton(

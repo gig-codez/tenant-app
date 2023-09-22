@@ -4,27 +4,34 @@ import 'dart:convert';
 
 import 'package:nyumbayo_app/helpers/session_manager.dart';
 
+import '../controllers/LoaderController.dart';
 import '../exports/exports.dart';
 
 class Auth {
   // landlord sign
   static void signInTenant() {}
 
-  static Future<void> login(
-      String email, String password, BuildContext context) async {
+  static Future<void> login(String email, String password, BuildContext context,
+      LoaderController controller) async {
     Response? response;
     try {
       response = await tenantLogin(email, password);
+      var data = json.decode(response.body);
       if (response.statusCode == 200) {
-        var data = json.decode(response.body);
         // save user session
         await SessionManager().storeToken(data["token"]);
         //
         BlocProvider.of<UserAccountController>(context)
             .captureData(response.body);
+        controller.loginLoader = false;
         Routes.routeUntil(context, Routes.dashboard);
         //
         showMessage(context: context, msg: "Logged in Successfully");
+      } else {
+        showMessage(
+            context: context,
+            msg: "Login failed: ${data['message']}",
+            type: 'danger');
       }
     } on ClientException catch (e) {
       AuthExceptionHandler.handleAuthException(e.message);

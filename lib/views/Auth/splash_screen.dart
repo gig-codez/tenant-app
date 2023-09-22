@@ -1,3 +1,5 @@
+import 'package:nyumbayo_app/helpers/session_manager.dart';
+
 import '/exports/exports.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -14,34 +16,33 @@ class _SplashScreenState extends State<SplashScreen> {
 
     Future.delayed(const Duration(seconds: 3)).then((value) {
       BlocProvider.of<UserAccountController>(context).getUserData();
-      InternetConnectionChecker.createInstance().hasConnection.then((value) {
-        if (value == false) {
-          Routes.routeUntil(context, Routes.offline);
-        } else {
-          // if (FirebaseAuth.instance.currentUser?.emailVerified == false ||
-          //     FirebaseAuth.instance.currentUser == null) {
-          Routes.routeUntil(context, Routes.login);
-          // } else {
-          //   if (context.read<TenantController>().state.isEmpty &&
-          //       context.read<UserdataController>().state.isEmpty) {
-          //     Routes.routeUntil(context, Routes.login);
-          //   } else {
-          //     Routes.routeUntil(context, Routes.dashboard);
-          //   }
-          // }
-        }
-      });
+      checkUserSession();
     });
     super.initState();
+  }
+
+  void checkUserSession() async {
+    bool userSession = await SessionManager().isTokenExpired();
+    InternetConnectionChecker.createInstance().hasConnection.then((value) {
+      if (value == false) {
+        Routes.routeUntil(context, Routes.offline);
+      } else {
+        if (userSession) {
+          Routes.routeUntil(context, Routes.login);
+        } else {
+          Routes.routeUntil(context, Routes.dashboard);
+        }
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<UserAccountController>(context).getUserData();
 
-    return Builder(
-      // future: Future.delayed(const Duration(seconds: 3)),
-      builder: (context) {
+    return FutureBuilder(
+      future: SessionManager().isTokenExpired(),
+      builder: (context, s) {
         return // s.connectionState == ConnectionState.waiting
             Scaffold(
           body: SafeArea(
@@ -55,15 +56,15 @@ class _SplashScreenState extends State<SplashScreen> {
                 const Space(space: 0.05),
                 SpinKitDualRing(color: Theme.of(context).primaryColor),
                 const Space(space: 0.05),
-                // Text(
-                //   FirebaseAuth.instance.currentUser == null
-                //       ? "Loading user authentication"
-                //       : "Loading user session",
-                //   style: const TextStyle(
-                //     fontSize: 20,
-                //     fontWeight: FontWeight.w500,
-                //   ),
-                // )
+                Text(
+                  s.data ?? false
+                      ? "Loading user authentication"
+                      : "Loading user session",
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                  ),
+                )
               ],
             ),
           ),
