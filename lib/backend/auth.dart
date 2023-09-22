@@ -1,0 +1,102 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:convert';
+
+import 'package:nyumbayo_app/helpers/session_manager.dart';
+
+import '../exports/exports.dart';
+
+class Auth {
+  // landlord sign
+  static void signInTenant() {}
+
+  static Future<void> login(
+      String email, String password, BuildContext context) async {
+    Response? response;
+    try {
+      response = await tenantLogin(email, password);
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        // save user session
+        await SessionManager().storeToken(data["token"]);
+        //
+        BlocProvider.of<UserAccountController>(context)
+            .captureData(response.body);
+        Routes.routeUntil(context, Routes.dashboard);
+        //
+        showMessage(context: context, msg: "Logged in Successfully");
+      }
+    } on ClientException catch (e) {
+      AuthExceptionHandler.handleAuthException(e.message);
+    }
+  }
+
+  static Future<void> signOut() async {
+    await SessionManager().clearToken();
+  }
+
+  static Future<void> resetPassword({required String email}) async {
+    try {
+      Client().post(Uri.parse("uri"));
+    } on ClientException catch (e, _) {
+      // status = AuthExceptionHandler.handleAuthException(e.message);
+    }
+  }
+}
+
+// exception handler
+
+enum AuthStatus {
+  wrongPassword,
+  emailAlreadyExists,
+  emailDoesnotExist,
+  weakPassword,
+  unknown
+}
+
+class AuthExceptionHandler {
+  static AuthStatus handleAuthException(String msg) {
+    AuthStatus status;
+    switch (msg) {
+      case "wrong-password":
+        status = AuthStatus.wrongPassword;
+        break;
+
+      case "email-doesnot-exist":
+        status = AuthStatus.emailDoesnotExist;
+        break;
+      case "email-already-in-use":
+        status = AuthStatus.emailAlreadyExists;
+        break;
+
+      default:
+        status = AuthStatus.unknown;
+    }
+    return status;
+  }
+
+  static void generateErrorMessage(AuthStatus error, BuildContext context) {
+    String? errorMessage;
+    switch (error) {
+      case AuthStatus.weakPassword:
+        errorMessage = "Your password should be at least 6 characters.";
+        break;
+      case AuthStatus.wrongPassword:
+        errorMessage = "Your email or password is wrong.";
+        break;
+      case AuthStatus.emailAlreadyExists:
+        errorMessage =
+            "The email address is already in use by another account.";
+        break;
+      case AuthStatus.emailDoesnotExist:
+        errorMessage = "The email address doesn't exist.";
+        break;
+      case AuthStatus.unknown:
+        errorMessage = null;
+        break;
+    }
+    if (errorMessage != null) {
+      showMessage(context: context, msg: errorMessage, type: 'danger');
+    }
+  }
+}
