@@ -12,10 +12,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   initState() {
-    BlocProvider.of<UserAccountController>(context).getUserData();
-
-    Future.delayed(const Duration(seconds: 3)).then((value) {
-      BlocProvider.of<UserAccountController>(context).getUserData();
+    Future.delayed(const Duration(seconds: 2)).then((value) {
       checkUserSession();
     });
     super.initState();
@@ -38,8 +35,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<UserAccountController>(context).getUserData();
-
     return FutureBuilder(
       future: SessionManager().isTokenExpired(),
       builder: (context, s) {

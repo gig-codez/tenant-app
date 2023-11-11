@@ -21,8 +21,7 @@ class Auth {
         // save user session
         await SessionManager().storeToken(data["token"]);
         //
-        BlocProvider.of<UserAccountController>(context)
-            .captureData(response.body);
+
         controller.loginLoader = false;
         Routes.routeUntil(context, Routes.dashboard);
         //

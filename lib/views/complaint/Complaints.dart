@@ -1,7 +1,5 @@
 // import 'dart:convert';
 
-import 'dart:convert';
-
 import '/exports/exports.dart';
 import 'ViewComplaint.dart';
 
@@ -16,12 +14,15 @@ class _ComplaintState extends State<Complaint> {
   @override
   void initState() {
     super.initState();
-    // context.read<MainController>().fetchComplaints();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // Provider.of<MainController>(context, listen: true).fetchComplaints();
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -37,8 +38,8 @@ class _ComplaintState extends State<Complaint> {
               ),
             ),
             Expanded(
-              child: StreamBuilder(
-                  stream: Stream.fromFuture(Future.value()),
+              child: FutureBuilder(
+                  future: fetchComplaints(""),
                   builder: (context, s) {
                     var data = s.data;
                     // return s.hasData == false
@@ -46,52 +47,50 @@ class _ComplaintState extends State<Complaint> {
                         ? const Loader(
                             text: "Complaints",
                           )
-                        : s.data!.docs.isEmpty
+                        : s.data!.isEmpty
                             ? const NoDataWidget(
                                 text: "No Complaints",
                               )
                             : ListView.builder(
-                                itemCount: data?.docs.length,
+                                itemCount: data?.length,
                                 itemBuilder: (ctx, i) {
-                                  var t = data?.docs[i];
+                                  var t = data?[i];
                                   return ListTile(
                                     onTap: () {
                                       Routes.push(
                                         ViewComplaint(
-                                          title: t?['title'],
-                                          description: t?['description'],
-                                          status: t?['status'],
-                                          image: t?['image'],
-                                          date: t?['date'],
+                                          title: t!.complaintName,
+                                          description: t.complaintDescription,
+                                          status: t.complaintStatus,
+                                          image: t.complaintImage,
+                                          date: t.createdAt.toString(),
                                         ),
                                         context,
                                       );
                                     },
-                                    leading: CircleAvatar(
+                                    leading: const CircleAvatar(
                                       radius: 40,
-                                      backgroundImage: MemoryImage(
-                                        base64.decode(
-                                          t?['image'],
-                                        ),
-                                      ),
+                                      // backgroundImage: MemoryImage(
+                                      //   base64.decode(
+                                      //     t?['image'],
+                                      //   ),
+                                      // ),
                                     ),
-                                    title: Text("${t?['title']}",
+                                    title: Text(t!.complaintName,
                                         style: TextStyles(context)
                                             .getRegularStyle()),
                                     subtitle: Text(
                                         getTimeAgo(
-                                          DateTime.parse(t?['date']).subtract(
-                                            Duration(seconds: 1),
+                                          t.createdAt.subtract(
+                                            const Duration(seconds: 1),
                                           ),
                                         ),
                                         style: TextStyles(context)
                                             .getDescriptionStyle()),
                                     trailing: Text(
-                                        "${t?['status']}"
-                                                .characters
-                                                .first
+                                        t.complaintStatus.characters.first
                                                 .toUpperCase() +
-                                            "${t?['status']}".substring(1),
+                                            t.complaintStatus.substring(1),
                                         style: TextStyles(context)
                                             .getDescriptionStyle()),
                                   );

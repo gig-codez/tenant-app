@@ -26,13 +26,7 @@ export 'package:internet_connection_checker/internet_connection_checker.dart';
 export 'package:image_picker/image_picker.dart';
 // controllers
 
-export '/controllers/UserdataController.dart';
-export '/controllers/TenantsController.dart';
-export '/controllers/PropertyIdController.dart';
-export '/controllers/AmountController.dart';
-export '/controllers/PropertyController.dart';
 export '/controllers/MainController.dart';
-export '/controllers/PowerStatusController.dart';
 
 // custom pages
 export '/views/Auth/login.dart';

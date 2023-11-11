@@ -36,36 +36,38 @@ class _PreviewState extends State<Preview> with SingleTickerProviderStateMixin {
         title: const Text("Payments Preview"),
       ),
       body: StreamBuilder(
-        stream: Stream.fromFuture(Future.value()),
+        stream: Stream.periodic(const Duration(seconds: 1)),
         builder: (context, snapshot) {
           var result = snapshot.data;
           return snapshot.hasData
-              ? result!.docs.isEmpty
+              ? result!.isEmpty
                   ? const NoDataWidget(text: "No payments available")
                   : ListView.separated(
                       itemBuilder: (ctx, i) {
                         return ListTile(
                           leading: const Icon(Icons.monetization_on),
                           title: Text(
-                              "Amount currently paid: ${result.docs[i]["amountPaid"].toString()}"),
-                          subtitle: Text(formatDateTime(DateTime.parse(
-                              result.docs[i]["date"].toString()))),
+                              "Amount currently paid: ${result[i].amountPaid.toString()}"),
+                          subtitle: Text(formatDateTime(
+                              DateTime.parse(result[i].createdAt.toString()))),
                           onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => Inventory(
-                                  amountPaid:
-                                      result.docs[i]["amountPaid"].toString(),
-                                  date: formatDateTime(DateTime.parse(result.docs[i]["date"].toString())),
-                                  paymentMode:
-                                      result.docs[i]["paymentMode"].toString(),
-                                      paymentStatus:double.parse(result.docs[i]["balance"].toString()) == 0 ? "Cleared" : "You have outsanding balances",
-                                  property: (
-                                      result.docs[i]["property"].toString()),
-                                  tenantName:
-                                      result.docs[i]["tenantName"].toString(),
-                                  balance: result.docs[i]["balance"].toString(),
+                                  amountPaid: result[i].amountPaid.toString(),
+                                  date: formatDateTime(DateTime.parse(
+                                      result[i].createdAt.toString())),
+                                  paymentMode: result[i].toString(),
+                                  paymentStatus: double.parse(
+                                              result[i].balance.toString()) ==
+                                          0
+                                      ? "Cleared"
+                                      : "You have outsanding balances",
+                                  property:
+                                      (result[i].property.name.toString()),
+                                  tenantName: result[i].tenant.name.toString(),
+                                  balance: result[i].balance.toString(),
                                 ),
                               ),
                             );
@@ -73,7 +75,7 @@ class _PreviewState extends State<Preview> with SingleTickerProviderStateMixin {
                         );
                       },
                       separatorBuilder: (ctx, i) => const Divider(),
-                      itemCount: result.docs.length)
+                      itemCount: result.length)
               : const Loader(
                   text: "payment inventory",
                 );

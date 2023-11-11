@@ -1,7 +1,7 @@
-import 'dart:convert';
 import 'dart:ui';
 
 import '/exports/exports.dart';
+import 'widgets/TileWidget.dart';
 
 class ViewComplaint extends StatefulWidget {
   final String title;
@@ -63,24 +63,21 @@ class _ViewComplaintState extends State<ViewComplaint>
                   margin: const EdgeInsets.only(left: 10, right: 10, top: 20),
                   child: Column(
                     children: [
-                      ListTile(
-                        title: Text(
-                          "Title",
-                          style: TextStyles(context).getRegularStyle(),
-                        ),
-                        trailing: Text(
-                          widget.title,
-                          style: TextStyles(context).getRegularStyle(),
+                      TileWigdet(title: "Title", description: widget.title),
+                      TileWigdet(
+                          title: "Description",
+                          description: widget.description),
+                      TileWigdet(
+                        title: "Time of submission",
+                        description: formatTime(
+                          DateTime.parse(widget.date),
                         ),
                       ),
-                      ListTile(
-                        title: Text(
-                          "Description",
-                          style: TextStyles(context).getRegularStyle(),
+                      TileWigdet(
+                        title: "Date",
+                        description: formatDate(
+                          DateTime.parse(widget.date),
                         ),
-                        trailing: Text(
-                          widget.description,
-                          style: TextStyles(context).getRegularStyle(),),
                       ),
                       ListTile(
                         title: Text(
@@ -107,31 +104,6 @@ class _ViewComplaintState extends State<ViewComplaint>
                               : widget.status == 'Rejected'
                                   ? Colors.red[700]
                                   : Colors.green[700],
-                        ),
-                      ),
-                      ListTile(
-                        title: Text(
-                          "Date",
-                          style: TextStyles(context).getRegularStyle(),
-                        ),
-                        trailing: Text(
-                          formatDate(
-                            DateTime.parse(widget.date),
-
-                          ),
-                           style: TextStyles(context).getRegularStyle(),
-                        ),
-                      ),
-                      ListTile(
-                        title: Text(
-                          "Time of submission",
-                          style: TextStyles(context).getRegularStyle(),
-                        ),
-                        trailing: Text(
-                          formatTime(
-                            DateTime.parse(widget.date),
-                          ),
-                           style: TextStyles(context).getRegularStyle(),
                         ),
                       ),
                     ],
@@ -167,27 +139,27 @@ class _ViewComplaintState extends State<ViewComplaint>
               ),
               background: Container(
                 width: double.infinity,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: MemoryImage(
-                      base64.decode(widget.image),
+                decoration: const BoxDecoration(
+                    // image: DecorationImage(
+                    //   image: MemoryImage(
+                    //     base64.decode(widget.image),
+                    //   ),
+                    //   fit: BoxFit.cover,
+                    //   colorFilter: const ColorFilter.mode(
+                    //       Colors.black26, BlendMode.darken),
+                    // ),
                     ),
-                    fit: BoxFit.cover,
-                    colorFilter: const ColorFilter.mode(
-                        Colors.black26, BlendMode.darken),
-                  ),
-                ),
                 child: BackdropFilter(
                   blendMode: BlendMode.modulate,
                   filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-                  child: SizedBox(
+                  child: const SizedBox(
                     width: 50,
                     height: 50,
-                    child: Image.memory(
-                      base64.decode(widget.image),
-                      width: 50,
-                      // fit: BoxFit.cover,
-                    ),
+                    // child: Image.memory(
+                    //   base64.decode(widget.image),
+                    //   width: 50,
+                    //   // fit: BoxFit.cover,
+                    // ),
                   ),
                 ),
               ),

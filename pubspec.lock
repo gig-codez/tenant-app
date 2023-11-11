@@ -528,6 +528,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.1"
+  navbar_router:
+    dependency: "direct main"
+    description:
+      name: navbar_router
+      sha256: aaafa18cc71a57ad5e38ad6aa3c254f1f6833c5aed38111a13051dccb843fe70
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.2"
   nested:
     dependency: transitive
     description:

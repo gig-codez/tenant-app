@@ -14,6 +14,7 @@
         "showpass",
         "spinkit",
         "Userdata",
-        "vsync"
+        "vsync",
+        "Wigdet"
     ]
 }

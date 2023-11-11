@@ -2,13 +2,9 @@
 
 import 'dart:async';
 
-import 'package:nyumbayo_app/controllers/LoaderController.dart';
-import 'package:nyumbayo_app/controllers/PaymentController.dart';
-import 'package:nyumbayo_app/helpers/session_manager.dart';
-import 'package:nyumbayo_app/tools/Reload.dart';
-
+import '/controllers/LoaderController.dart';
+import '/tools/Reload.dart';
 import 'Observers/IntervalObserver.dart';
-import 'controllers/PowerBillController.dart';
 import 'exports/exports.dart';
 
 Future<void> main() async {
@@ -53,12 +49,6 @@ Future<void> main() async {
     ReloadApp(
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(create: (_) => UserAccountController()),
-          BlocProvider(create: (_) => AmountController()),
-          BlocProvider(create: (_) => PaymentController()),
-          BlocProvider(create: (_) => TenantController()),
-          BlocProvider(create: (_) => PowerStatusController()),
-          BlocProvider(create: (_) => PowerBillController()),
           ChangeNotifierProvider(create: (_) => MainController()),
           ChangeNotifierProvider(create: (_) => LoaderController()),
         ],

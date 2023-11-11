@@ -1,10 +1,10 @@
 // function to handle login
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:nyumbayo_app/APIS/AppUrls.dart';
+import 'package:nyumbayo_app/models/Complaints.dart';
+import 'package:nyumbayo_app/models/Payment.dart';
 
-import '../models/Payment.dart';
 import '/exports/exports.dart';
 
 Future<Response> tenantLogin(String email, String password) async {
@@ -44,4 +44,22 @@ Future<Response> fetchPaymentRecord(String user) async {
     log(e.message);
   }
   return response;
+}
+
+Future<List<ComplaintModel>> fetchComplaints(String userId) async {
+  List<ComplaintModel> complaints = [];
+  Response response =
+      await Client().get(Uri.parse(Feeds.tenantComplaints + userId));
+  if (response.statusCode == 200) {
+    complaints = complaintModelFromJson(response.body);
+    return complaints;
+  }
+  return complaints;
+}
+
+// function to fetch payments made by the tenant
+Future<List<PaymentModel>> fetchTenantPayments(String tenantId) async {
+  Response response =
+      await Client().get(Uri.parse(Feeds.tenantPayments + tenantId));
+  return paymentModelFromJson(response.body);
 }
