@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:nyumbayo_app/controllers/UserController.dart';
 import 'package:nyumbayo_app/helpers/session_manager.dart';
 
 import '../controllers/LoaderController.dart';
@@ -20,8 +21,8 @@ class Auth {
       if (response.statusCode == 200) {
         // save user session
         await SessionManager().storeToken(data["token"]);
-        //
-
+        // capture user data
+        context.read<MainController>().userData = data;
         controller.loginLoader = false;
         Routes.routeUntil(context, Routes.dashboard);
         //

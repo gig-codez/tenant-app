@@ -1,8 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'dart:async';
-
-import '/controllers/LoaderController.dart';
 import '/tools/Reload.dart';
 import 'Observers/IntervalObserver.dart';
 import 'exports/exports.dart';
@@ -39,7 +37,7 @@ Future<void> main() async {
   flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()
-      ?.requestPermission();
+      ?.requestNotificationsPermission();
 
   await flutterLocalNotificationsPlugin.initialize(initializationSettings,
       onDidReceiveNotificationResponse: (payload) async {});
@@ -57,9 +55,9 @@ Future<void> main() async {
             debugShowCheckedModeBanner: false,
             initialRoute: Routes.splash,
             theme: ThemeData().copyWith(
-              appBarTheme: const AppBarTheme(backgroundColor: Colors.blue),
-              colorScheme: ColorScheme.fromSeed(
-                  seedColor: const Color.fromARGB(255, 5, 70, 150)),
+              primaryColor: Colors.orange.shade500,
+              colorScheme:
+                  ColorScheme.fromSeed(seedColor: Colors.orange.shade300),
               useMaterial3: true,
               textTheme:
                   GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)

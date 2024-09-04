@@ -42,7 +42,7 @@ class _MessagePageState extends State<MessagePage>
           const Space(space: 0.05),
           CommonButton(
             buttonText: "Back to Login",
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             height: 55,
             onTap: () => Routes.routeUntil(context, Routes.login),
           ),

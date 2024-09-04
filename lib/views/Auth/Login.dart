@@ -1,8 +1,5 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:nyumbayo_app/controllers/LoaderController.dart';
-
-import '../../backend/auth.dart';
 import '/exports/exports.dart';
 
 class Login extends StatefulWidget {
@@ -25,28 +22,29 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Form(
         key: formKey,
         child: SingleChildScrollView(
           child: Consumer<LoaderController>(builder: (context, controller, ch) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              // mainAxisAlignment: MainAxisAlignment.c,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Space(space: 0.07),
+                const Space(space: 0.02),
                 Padding(
                   padding: const EdgeInsets.all(28.0),
                   child: Text(
                     "Login",
-                    style: Theme.of(context).textTheme.headline4!.copyWith(
-                        fontSize: 50,
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        fontSize: 40,
                         color: Colors.black,
                         fontWeight: FontWeight.w200),
                   ),
                 ),
                 AspectRatio(
-                  aspectRatio: 1.6,
-                  child: Image.asset("assets/images/house.png"),
+                  aspectRatio: 1.2,
+                  child: Image.asset("assets/images/login.jpg"),
                 ),
                 CommonTextField(
                   enableBorder: true,

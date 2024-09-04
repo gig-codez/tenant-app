@@ -1,3 +1,5 @@
+import 'package:nyumbayo_app/widgets/CustomRichText.dart';
+
 import '../../payments/payment.dart';
 import '/exports/exports.dart';
 
@@ -27,66 +29,68 @@ class _MiniDashBoardState extends State<MiniDashBoard> {
         padding: const EdgeInsets.only(left: 19.0, right: 19.0),
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.width * 0.6683,
-          child: Card(
-            color: Colors.blue.shade600,
-            shape: RoundedRectangleBorder(
+          height: MediaQuery.of(context).size.width * 0.3683,
+          child: Container(
+            decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
+              gradient: LinearGradient(
+                  begin: Alignment.bottomRight,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Theme.of(context).primaryColor.withAlpha(255),
+                    Theme.of(context).primaryColor.withAlpha(140),
+                    Theme.of(context).primaryColor,
+                  ],
+                  stops: const [
+                    0.0,
+                    0.5,
+                    1
+                  ]),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Space(space: 0.04),
-                DashTile(
-                  title: "Rent Balance",
-                  value: "0/=",
-                  // color: percentage < 80
-                  //     ? Colors.orangeAccent
-                  //     : Colors.white,
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.width * 0.03,
-                ),
-                const Space(space: 0.01),
-                const Space(space: 0.01),
                 Padding(
-                  padding:
-                      const EdgeInsets.only(top: 20.0, left: 20, bottom: 0),
+                  padding: const EdgeInsets.fromLTRB(28.0, 28.0, 18.0, 0.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(12.0),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: Colors.white,
-                            )),
-                        child: const Text(
-                          "Make payment",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            color: Colors.white,
-                            fontSize: 16,
+                      CustomRichText(
+                        children: [
+                          TextSpan(
+                            text: "Balance\n",
+                            style: TextStyles(context)
+                                .getRegularStyle()
+                                .copyWith(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500),
                           ),
-                        ),
+                          TextSpan(
+                            text: "\$ 400\n",
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .copyWith(
+                                    color: Colors.white,
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w900),
+                          ),
+                          TextSpan(
+                            text: "Tap here to make payment\n",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w200),
+                          )
+                        ],
                       ),
-                      // circle decoration
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: Card(
-                          color: Colors.blue.shade600,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(100),
-                            side:
-                                const BorderSide(color: Colors.white, width: 5),
-                          ),
-                          child: const SizedBox(
-                            width: 25,
-                            height: 25,
-                          ),
-                        ),
-                      )
+                      SvgPicture.asset("assets/svg/money.svg",
+                          color: Colors.white, width: 50, height: 50)
                     ],
                   ),
                 ),

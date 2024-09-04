@@ -26,7 +26,7 @@ export 'package:internet_connection_checker/internet_connection_checker.dart';
 export 'package:image_picker/image_picker.dart';
 // controllers
 
-export '/controllers/MainController.dart';
+export '../controllers/MainController.dart';
 
 // custom pages
 export '/views/Auth/login.dart';
@@ -45,3 +45,6 @@ export '/messages/Index.dart';
 
 // helpers
 export '/helpers/helperFunctions.dart';
+
+export '/backend/auth.dart';
+export '/controllers/LoaderController.dart';

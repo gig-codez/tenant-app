@@ -1,3 +1,6 @@
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:navbar_router/navbar_router.dart';
+
 import '../reports/GraphicalReport.dart';
 import '/exports/exports.dart';
 
@@ -13,25 +16,24 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
-  final icons = [
-    const Icon(Icons.home),
-    const Icon(Icons.file_copy_sharp),
-    const Icon(Icons.person_4),
+  final List<IconData> icons = [
+    Icons.file_copy_sharp,
+    Icons.home,
+    Icons.person_4,
   ];
   final labels = [
+    "Complaint",
     "Home",
-    "Complaints",
     "Profile",
   ];
-  int _page = 0;
+  int _page = 1;
   // pages
-  List<Widget> pages = [const Home(), const Complaint(), const ProfileScreen()];
+  List<Widget> pages = [const Complaint(), const Home(), const ProfileScreen()];
 
-  final _pageController = PageController(initialPage: 0);
+  final _pageController = PageController(initialPage: 1);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,26 +44,36 @@ class _DashboardState extends State<Dashboard> {
           children: pages,
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 2,
-        backgroundColor: Colors.grey.shade300,
-        showSelectedLabels: true,
-        unselectedLabelStyle: TextStyles(context).getRegularStyle().copyWith(
-          fontSize: 12
-        ), selectedLabelStyle: TextStyles(context).getRegularStyle().copyWith(
-          fontSize: 12
-        ),
-        currentIndex:_page ,
-        onTap: (x){
-          setState(() {
-            _page = x;
-          });
-          _pageController.animateToPage(x, duration: const Duration(milliseconds: 500), curve: Curves.easeInSine);
-        },
-        items: List.generate(
-          3,
-          (index) =>
-              BottomNavigationBarItem(icon: icons[index], label: labels[index]),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
+          child: GNav(
+              selectedIndex: _page,
+              onTabChange: (int index) {
+                setState(() {
+                  _page = index;
+                });
+                _pageController.animateToPage(index,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeInSine);
+              },
+              rippleColor: Colors.grey[300]!,
+              hoverColor: Colors.grey[100]!,
+              gap: 8,
+              activeColor: Theme.of(context).primaryColor.withAlpha(500),
+              iconSize: 28,
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 13),
+              duration: const Duration(milliseconds: 100),
+              // tabBackgroundColor: Colors.grey[100]!,
+              color: Colors.grey.shade400,
+              tabBackgroundColor:
+                  Theme.of(context).primaryColor.withOpacity(0.1),
+              curve: Curves.easeOutExpo, // tab animation curves
+
+              tabs: List.generate(
+                3,
+                (index) => GButton(icon: icons[index], text: labels[index],),
+              )),
         ),
       ),
     );

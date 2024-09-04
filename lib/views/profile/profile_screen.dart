@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:nyumbayo_app/constants/sizes.dart';
+import 'package:nyumbayo_app/controllers/UserController.dart';
 import 'package:nyumbayo_app/models/UserModel.dart';
 import 'package:nyumbayo_app/views/profile/profile_menu.dart';
 
@@ -21,64 +22,67 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(tDefaultSize),
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Colors.blue.shade100,
-                    radius: 50,
-                    child: const Text("",
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold)),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              // Text(user.name, style: TextStyles(context).getTitleStyle()),
-              // Text(user.email,
-              //     style: TextStyles(context).getRegularStyle()),
-              const SizedBox(height: 20),
-              const SizedBox(height: 30),
-              const Divider(),
-              const SizedBox(height: 10),
-              ProfileMenuWidget(
-                title: "user.phone",
-                icon: Icons.phone,
-                onPress: () {},
-                endIcon: false,
-              ),
-              ProfileMenuWidget(
-                title: "user.address",
-                icon: Icons.location_on,
-                onPress: () {},
-                endIcon: false,
-              ),
-              ProfileMenuWidget(
-                title: "logout",
-                icon: Icons.logout,
-                endIcon: false,
-                onPress: () {
-                  showProgress(context, text: "Logging out...");
-                  Auth.signOut().then((value) {}).whenComplete(() {
-                    Routes.routeUntil(context, Routes.login);
-                    showMessage(
-                        context: context,
-                        msg: "Logged out successfully",
-                        type: 'success');
-                  });
-                },
-              ),
-              ProfileMenuWidget(
-                title: "Exit",
-                icon: Icons.exit_to_app,
-                onPress: () => exit(0),
-                endIcon: false,
-              ),
-              const Space(space: 0.03),
-              const Divider()
-            ],
-          ),
+          child: Consumer<MainController>(builder: (context, data, child) {
+            return Column(
+              children: [
+                Stack(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Colors.blue.shade100,
+                      radius: 50,
+                      child: const Text("",
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.bold)),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Text(data.userData['name'],
+                    style: TextStyles(context).getTitleStyle()),
+                Text(data.userData['email'],
+                    style: TextStyles(context).getRegularStyle()),
+                const SizedBox(height: 20),
+                const SizedBox(height: 30),
+                const Divider(),
+                const SizedBox(height: 10),
+                ProfileMenuWidget(
+                  title: "}",
+                  icon: Icons.phone,
+                  onPress: () {},
+                  endIcon: false,
+                ),
+                ProfileMenuWidget(
+                  title: "user.address",
+                  icon: Icons.location_on,
+                  onPress: () {},
+                  endIcon: false,
+                ),
+                ProfileMenuWidget(
+                  title: "logout",
+                  icon: Icons.logout,
+                  endIcon: false,
+                  onPress: () {
+                    showProgress(context, text: "Logging out...");
+                    Auth.signOut().then((value) {}).whenComplete(() {
+                      Routes.routeUntil(context, Routes.login);
+                      showMessage(
+                          context: context,
+                          msg: "Logged out successfully",
+                          type: 'success');
+                    });
+                  },
+                ),
+                ProfileMenuWidget(
+                  title: "Exit",
+                  icon: Icons.exit_to_app,
+                  onPress: () => exit(0),
+                  endIcon: false,
+                ),
+                const Space(space: 0.03),
+                const Divider()
+              ],
+            );
+          }),
         ),
       ),
     );

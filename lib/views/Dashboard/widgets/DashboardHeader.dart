@@ -1,5 +1,6 @@
 import 'package:nyumbayo_app/models/UserAccountModel.dart';
 
+import '../../../widgets/CustomRichText.dart';
 import '/exports/exports.dart';
 
 class DashboardHeader extends StatefulWidget {
@@ -12,25 +13,42 @@ class DashboardHeader extends StatefulWidget {
 class _DashboardHeaderState extends State<DashboardHeader> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Expanded(
-            flex: 3,
-            child: Padding(
-              padding: EdgeInsets.all(18.0),
-              child: Text(
-                "Hi ",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+    return Consumer<MainController>(builder: (context, controller, child) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              flex: 3,
+              child: Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: CustomRichText(
+                  children: [
+                    const TextSpan(
+                      text: "Hello, \n",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                    ),
+                    TextSpan(
+                      text: "${controller.userData['name']}, ",
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.w800),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          Text("Power Status", style: TextStyles(context).getBoldStyle()),
-          // power status
-        ],
-      ),
-    );
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+              child: TapEffect(
+                  onClick: () {},
+                  child: SvgPicture.asset("assets/svg/notification.svg")),
+            ),
+            // power status
+          ],
+        ),
+      );
+    });
   }
 }
