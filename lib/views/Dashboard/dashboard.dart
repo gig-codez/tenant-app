@@ -1,13 +1,10 @@
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:navbar_router/navbar_router.dart';
-
-import '../reports/GraphicalReport.dart';
 import '/exports/exports.dart';
 
 import 'Home.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({Key? key}) : super(key: key);
+  const Dashboard({super.key});
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -72,7 +69,10 @@ class _DashboardState extends State<Dashboard> {
 
               tabs: List.generate(
                 3,
-                (index) => GButton(icon: icons[index], text: labels[index],),
+                (index) => GButton(
+                  icon: icons[index],
+                  text: labels[index],
+                ),
               )),
         ),
       ),
