@@ -1,19 +1,27 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:nyumbayo_app/controllers/UserController.dart';
-import 'package:nyumbayo_app/helpers/session_manager.dart';
-
-import '../controllers/LoaderController.dart';
+import '/helpers/session_manager.dart';
 import '../exports/exports.dart';
 
 class Auth {
   // landlord sign
-  static void signInTenant() {}
+  static Future<UserCredential> signInTenant(
+      String email, String password) async {
+    try {
+      UserCredential result = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      return result;
+    } on FirebaseAuthException catch (e, stackTrace) {
+      AuthExceptionHandler.handleAuthException(e.message ?? "");
+      return Future.error(e, stackTrace);
+    }
+  }
 
-  static Future<void> login(String email, String password, BuildContext context,
-      LoaderController controller) async {
+  static Future<void> apiLogin(String email, String password,
+      BuildContext context, LoaderController controller) async {
     Response? response;
     try {
       response = await tenantLogin(email, password);

@@ -39,9 +39,10 @@ class _ComplaintState extends State<Complaint> {
             ),
             Expanded(
               child: FutureBuilder(
-                  future: fetchComplaints(""),
+                  future: getComplaints(),
                   builder: (context, s) {
                     var data = s.data;
+                    print("data => " + data.toString());
                     // return s.hasData == false
                     return s.hasData == false
                         ? const Loader(
@@ -59,11 +60,11 @@ class _ComplaintState extends State<Complaint> {
                                     onTap: () {
                                       Routes.push(
                                         ViewComplaint(
-                                          title: t!.complaintName,
-                                          description: t.complaintDescription,
-                                          status: t.complaintStatus,
-                                          image: t.complaintImage,
-                                          date: t.createdAt.toString(),
+                                          title: t?.data()['title'],
+                                          description: t?.data()['description'],
+                                          status: t?.data()['status'],
+                                          image: t?.data()['image'],
+                                          date: t!.data()['date'],
                                         ),
                                         context,
                                       );
@@ -76,23 +77,24 @@ class _ComplaintState extends State<Complaint> {
                                       //   ),
                                       // ),
                                     ),
-                                    title: Text(t!.complaintName,
+                                    title: Text(t?.data()['title'],
                                         style: TextStyles(context)
                                             .getRegularStyle()),
                                     subtitle: Text(
                                         getTimeAgo(
-                                          t.createdAt.subtract(
+                                          DateTime.parse(t?.data()['date'])
+                                              .subtract(
                                             const Duration(seconds: 1),
                                           ),
                                         ),
                                         style: TextStyles(context)
                                             .getDescriptionStyle()),
-                                    trailing: Text(
-                                        t.complaintStatus.characters.first
-                                                .toUpperCase() +
-                                            t.complaintStatus.substring(1),
-                                        style: TextStyles(context)
-                                            .getDescriptionStyle()),
+                                    // trailing: Text(
+                                    //     t.complaintStatus.characters.first
+                                    //             .toUpperCase() +
+                                    //         t.complaintStatus.substring(1),
+                                    //     style: TextStyles(context)
+                                    //         .getDescriptionStyle()),
                                   );
                                 });
                   }),

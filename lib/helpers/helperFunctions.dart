@@ -1,6 +1,8 @@
 // function to handle login
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nyumbayo_app/APIS/AppUrls.dart';
 import 'package:nyumbayo_app/models/Complaints.dart';
 import 'package:nyumbayo_app/models/Payment.dart';
@@ -44,6 +46,22 @@ Future<Response> fetchPaymentRecord(String user) async {
     log(e.message);
   }
   return response;
+}
+
+// fetching complaints from firebase
+Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
+    getComplaints() async {
+  String userId = FirebaseAuth.instance.currentUser!.uid;
+  print(userId);
+  var complaints = await FirebaseFirestore.instance
+      .collection('complaints')
+      // .where(
+      //   'tenant_id',
+      //   isEqualTo: userId,
+      // )
+      .get();
+  print(complaints.docs);
+  return complaints.docs;
 }
 
 Future<List<ComplaintModel>> fetchComplaints(String userId) async {

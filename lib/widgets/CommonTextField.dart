@@ -11,6 +11,7 @@ class CommonTextField extends StatelessWidget {
   final TextEditingController? controller;
   final Color? fieldColor;
   final IconData? icon;
+  final double? height;
   final bool readOnly;
   final int? maxLength;
   final bool enableSuffix;
@@ -20,11 +21,12 @@ class CommonTextField extends StatelessWidget {
   final VoidCallback? onTapSuffix;
   final String? Function(String?)? validate;
   const CommonTextField({
-    Key? key,
+    super.key,
     this.maxLength,
     this.contentPadding,
     this.hintText = '',
     this.isObscureText = false,
+    this.height,
     this.padding = const EdgeInsets.only(),
     this.onChanged,
     this.keyboardType = TextInputType.text,
@@ -38,8 +40,9 @@ class CommonTextField extends StatelessWidget {
     this.suffixIcon,
     this.onTapSuffix,
     this.enableSuffix = false,
-    this.icon, this.readOnly = false,
-  }) : super(key: key);
+    this.icon,
+    this.readOnly = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +82,7 @@ class CommonTextField extends StatelessWidget {
                 right: 16,
               ),
               child: SizedBox(
-                height: 45,
+                height: height ?? 50,
                 child: Center(
                   child: TextFormField(
                     readOnly: readOnly,

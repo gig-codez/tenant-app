@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
 
 import '/exports/exports.dart';
 
@@ -122,7 +122,7 @@ class _LoginState extends State<Login> {
                 ),
                 CommonButton(
                   padding: padding,
-                  height: 50,
+                  height: 60,
                   buttonTextWidget: controller.loginLoader
                       ? const CircularProgressIndicator(
                           color: Colors.white,
@@ -146,8 +146,19 @@ class _LoginState extends State<Login> {
                                 type: 'danger');
                           } else {
                             controller.loginLoader = true;
-                            Auth.login(emailController.text,
-                                passwordController.text, context, controller);
+                            Auth.signInTenant(
+                              emailController.text,
+                              passwordController.text,
+                            ).then((value) {
+                              controller.loginLoader = false;
+                              Routes.routeUntil(context, Routes.dashboard);
+                            }).onError((error, stackTrace) {
+                              controller.loginLoader = false;
+                              showMessage(
+                                  context: context,
+                                  msg: "Login failed: $error",
+                                  type: 'danger');
+                            });
                           }
                         },
                 ),

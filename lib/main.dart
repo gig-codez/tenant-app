@@ -4,10 +4,14 @@ import 'dart:async';
 import '/tools/Reload.dart';
 import 'Observers/IntervalObserver.dart';
 import 'exports/exports.dart';
+import 'firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.edgeToEdge,
@@ -58,6 +62,7 @@ Future<void> main() async {
               primaryColor: Colors.orange.shade500,
               colorScheme:
                   ColorScheme.fromSeed(seedColor: Colors.orange.shade300),
+              // ignore: deprecated_member_use
               useMaterial3: true,
               textTheme:
                   GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
